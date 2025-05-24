@@ -1,31 +1,30 @@
-// ALSP - 4 Lines
+// redesigning for 5 lines and 50 sequential stations
 #include <iostream>
 #include <algorithm>
 using namespace std;
 
-const int LINES = 4;
-const int JOBS = 4;
+const int LINES = 5;
+const int JOBS = 50;
 
-const int ENTRIES[LINES] = {3, 5, 4, 6};
-const int EXITS[LINES] = {2, 5, 1, 2};
+const int ENTRIES[LINES] = {1, 4, 2, 1, 2};
+const int EXITS[LINES] = {5, 4, 4, 4, 1};
 
-const int BASE_COST = 20;
+// const int BASE_COST = 20;
+// const int FAILURE_PENALTY = 10;
 
-const int FAILURE_PENALTY = 10;
-
-const int FAILURE_DOWNTIME[LINES][JOBS] = {
+const int PROCESSING_COST[LINES][JOBS] = {
     {840, 1190, 4665, 115},
     {705, 350, 390, 2225},
     {320, 195, 30, 85},
     {20, 65, 85, 205}};
 
-const int FAILURE[LINES][JOBS] = {
-    {13, 48, 15, 6},
-    {13, 9, 11, 20},
-    {6, 4, 1, 2},
-    {1, 3, 3, 1}};
+// const int FAILURE[LINES][JOBS] = {
+//	{13, 48, 15, 6},
+//	{13, 9, 11, 20},
+//	{6, 4, 1, 2},
+//	{1, 3, 3, 1} };
 
-const int TRANSFER_COST = 5;
+const int TRANSFER_COST[LINES][LINES][JOBS] = {};
 
 int (*stationCost())[JOBS]
 {
@@ -34,7 +33,7 @@ int (*stationCost())[JOBS]
     {
         for (int j = 0; j < JOBS; j++)
         {
-            stations[i][j] = BASE_COST + FAILURE_DOWNTIME[i][j] + (FAILURE_PENALTY * FAILURE[i][j]);
+            stations[i][j] = BASE_COST + PROCESSING_COST[i][j] + (FAILURE_PENALTY * FAILURE[i][j]);
             cout << stations[i][j] << " ";
         }
         cout << endl;
