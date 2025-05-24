@@ -9,10 +9,10 @@ using namespace std;
 const int LINES = 5; // lines
 const int JOBS = 50; // processingCosts
 
-int entryCosts[LINES];                 // E(line)
-int exitCosts[LINES];                  // X(line)
-int processingCosts[LINES][JOBS];      // A(line, station)
-int transferCosts[LINES][LINES][JOBS]; // T(lineFrom, lineTo, station)
+int entryCosts[LINES];                     // E(line)
+int exitCosts[LINES];                      // X(line)
+int processingCosts[LINES][JOBS];          // A(line, station)
+int transferCosts[LINES][LINES][JOBS - 1]; // T(lineFrom, lineTo, station-1)
 
 string splitEnd(string str, string delim)
 {
@@ -85,7 +85,7 @@ void getProcessingCosts()
     {
         for (int j = 0; j < JOBS; j++)
         {
-            cout << processingCosts[i][j] << " ";
+            cout << processingCosts[i][j] << "  ";
         }
         cout << "," << endl;
     }
@@ -132,7 +132,7 @@ void getTransferCosts()
         for (int j = 0; j < LINES; j++)
         {
             cout << " { ";
-            for (int z = 0; z < JOBS; z++)
+            for (int z = 0; z < JOBS - 1; z++)
             {
                 cout << transferCosts[i][j][z] << " ";
             }
@@ -141,22 +141,6 @@ void getTransferCosts()
         cout << endl;
     }
 }
-
-/*int(*stationCost())[JOBS]
-{
-    static int stations[LINES][JOBS];
-    for (int i = 0; i < LINES; i++)
-    {
-        for (int j = 0; j < JOBS; j++)
-        {
-            stations[i][j] = BASE_COST + processingCosts[i][j] + (FAILURE_PENALTY * FAILURE[i][j]);
-            cout << stations[i][j] << " ";
-        }
-        cout << endl;
-    }
-
-    return stations;
- }*/
 
 void fastestWay()
 {
@@ -168,17 +152,6 @@ void fastestWay()
         f[i][JOBS] = 0;
         l[i][JOBS] = 0;
     }
-
-    // f[0][JOBS] = 0;
-    // f[1][JOBS] = 0;
-    // f[2][JOBS] = 0;
-    // f[3][JOBS] = 0;
-    // f[4][JOBS] = 0;
-    // l[0][JOBS] = 0;
-    // l[1][JOBS] = 0;
-    // l[2][JOBS] = 0;
-    // l[3][JOBS] = 0;
-    // l[4][JOBS] = 0;
 
     // F[LINES][1] and L[LINES][1]
     for (int i = 0; i < LINES; i++)
@@ -355,7 +328,7 @@ void fastestWay()
             f[4][j] = f[0][j - 1] + transferCosts[0][4][j - 1] + processingCosts[4][j];
             l[4][j] = 1;
         }
-        else if (f[1][j - 1] + transferCosts[1][4][j - 1] + processingCosts[4][j],
+        else if (f[1][j - 1] + transferCosts[1][4][j - 1] + processingCosts[4][j] <=
                  min(f[2][j - 1] + transferCosts[2][4][j - 1] + processingCosts[4][j],
                      f[3][j - 1] + transferCosts[3][4][j - 1] + processingCosts[4][j]))
         {
@@ -407,6 +380,10 @@ void fastestWay()
         for (int j = 0; j <= JOBS; j++)
         {
             cout << f[i][j] << " ";
+            if (j == JOBS && f[i][j] != 0)
+            {
+                cout << "mins <- TOTAL TIME (" << f[i][j] / 12 << " hrs)";
+            }
         }
         cout << endl;
     }
@@ -416,20 +393,18 @@ void fastestWay()
         for (int j = 0; j <= JOBS; j++)
         {
             cout << l[i][j] << " ";
+            if (j == JOBS && l[i][j] != 0)
+            {
+                cout << "<-";
+            }
         }
         cout << endl;
     }
+    cout << endl;
 }
 
 int main()
 {
-
-    /*int(*processingCosts)[JOBS] = stationCost();
-    cout << processingCosts << " " << *processingCosts << endl;
-
-    fastestWay(processingCosts);*/
-
-    // csv_parsing();
     getEntryExitCosts();
     getProcessingCosts();
     getTransferCosts();
