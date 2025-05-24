@@ -47,9 +47,10 @@ void getEntryExitCosts()
         exitCosts[row] = atoi(tempStr.c_str());
     }
 
+    cout << "E[LINE]      X[LINE]" << endl;
     for (int i = 0; i < LINES; i++)
     {
-        cout << entryCosts[i] << " " << exitCosts[i] << endl;
+        cout << entryCosts[i] << "\t\t" << exitCosts[i] << endl;
     }
 }
 
@@ -80,7 +81,7 @@ void getProcessingCosts()
         }
     }
 
-    cout << "PROCESSING" << endl;
+    cout << "PROCESSING COST A[LINE][STATION] (in mins)" << endl;
     for (int i = 0; i < LINES; i++)
     {
         for (int j = 0; j < JOBS; j++)
@@ -126,12 +127,13 @@ void getTransferCosts()
         transferCosts[linefrom][lineto][job] = cost;
     }
 
-    cout << "TRANSFER" << endl;
+    cout << "TRANSFER COST T[LINE_FROM][LINE_TO][STATION-1] (in mins)" << endl;
     for (int i = 0; i < LINES; i++)
     {
+        cout << "FROM LINE " << i + 1 << " TO:" << endl;
         for (int j = 0; j < LINES; j++)
         {
-            cout << " { ";
+            cout << "LINE " << j + 1 << " { ";
             for (int z = 0; z < JOBS - 1; z++)
             {
                 cout << transferCosts[i][j][z] << " ";
@@ -375,6 +377,7 @@ void fastestWay()
         l[3][JOBS] = 4;
     }
 
+    cout << "F[LINE][STATION]" << endl;
     for (int i = 0; i < LINES; i++)
     {
         for (int j = 0; j <= JOBS; j++)
@@ -388,6 +391,7 @@ void fastestWay()
         cout << endl;
     }
     cout << endl;
+    cout << "L[LINE][STATION]" << endl;
     for (int i = 0; i < LINES; i++)
     {
         for (int j = 0; j <= JOBS; j++)
@@ -406,11 +410,12 @@ void fastestWay()
 int main()
 {
     getEntryExitCosts();
+    cout << endl;
     getProcessingCosts();
+    cout << endl;
     getTransferCosts();
+    cout << endl;
 
-    cout << endl;
-    cout << endl;
     fastestWay();
 
     return 0;
