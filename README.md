@@ -111,11 +111,11 @@ $$f^* = \min(f_1[50] + x_1,\ f_2[50] + x_2,\ f_3[50] + x_3,\ f_4[50] + x_4,\ f_5
 
 ### Performance Comparison:
 
-| Algorithm                  | Makespan     | Transitions | Complexity |
-| -------------------------- | ------------ | ----------- | ---------- |
-| Dynamic Programming (Ours) | 439 mins     | 23          | O(n × m²)  |
-| Naive Greedy               | ~ 439+Δ mins | 0           | O(n × m)   |
-| Brute Force (Exhaustive)   | Infeasible   | High        | O(mⁿ)      |
+| Algorithm                  | Makespan     | Transitions | Complexity    |
+| -------------------------- | ------------ | ----------- | ------------- |
+| Dynamic Programming (Ours) | 439 mins     | 23          | O(n-1) ~ O(n) |
+| Naive Greedy               | ~ 439+Δ mins | 0           | O(n × m)      |
+| Brute Force (Exhaustive)   | Infeasible   | High        | O(mⁿ)         |
 
 Where m = 5 (lines), n = 50 (stations)
 
