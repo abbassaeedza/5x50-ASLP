@@ -353,28 +353,37 @@ void fastestWay()
     if (f[0][JOBS - 1] + exitCosts[0] <=
         min(f[1][JOBS - 1] + exitCosts[1],
             min(f[2][JOBS - 1] + exitCosts[2],
-                f[3][JOBS - 1] + exitCosts[3])))
+                min(f[3][JOBS - 1] + exitCosts[3],
+                    f[4][JOBS - 1] + exitCosts[4]))))
     {
         f[0][JOBS] = f[0][JOBS - 1] + exitCosts[0];
         l[0][JOBS] = 1;
     }
     else if (f[1][JOBS - 1] + exitCosts[1] <=
              min(f[2][JOBS - 1] + exitCosts[2],
-                 f[3][JOBS - 1] + exitCosts[3]))
+                 min(f[3][JOBS - 1] + exitCosts[3],
+                     f[4][JOBS - 1] + exitCosts[4])))
     {
         f[1][JOBS] = f[1][JOBS - 1] + exitCosts[1];
         l[1][JOBS] = 2;
     }
     else if (f[2][JOBS - 1] + exitCosts[2] <=
-             f[3][JOBS - 1] + exitCosts[3])
+             min(f[3][JOBS - 1] + exitCosts[3],
+                 f[4][JOBS - 1] + exitCosts[4]))
     {
         f[2][JOBS] = f[2][JOBS - 1] + exitCosts[2];
         l[2][JOBS] = 3;
     }
-    else
+    else if (f[3][JOBS - 1] + exitCosts[3] <=
+             f[4][JOBS - 1] + exitCosts[4])
     {
         f[3][JOBS] = f[3][JOBS - 1] + exitCosts[3];
         l[3][JOBS] = 4;
+    }
+    else
+    {
+        f[4][JOBS] = f[4][JOBS - 1] + exitCosts[4];
+        l[4][JOBS] = 5;
     }
 
     cout << "F[LINE][STATION]" << endl;
@@ -382,10 +391,14 @@ void fastestWay()
     {
         for (int j = 0; j <= JOBS; j++)
         {
-            cout << f[i][j] << " ";
+            if (j != JOBS)
+            {
+                cout << f[i][j] << " ";
+            }
             if (j == JOBS && f[i][j] != 0)
             {
-                cout << "mins <- TOTAL TIME (" << f[i][j] / 12 << " hrs)";
+                cout << "+ " << exitCosts[i] << " <- TOTAL TIME: " << f[i][j];
+                cout << " (" << f[i][j] / 12 << "hrs)";
             }
         }
         cout << endl;
@@ -396,7 +409,10 @@ void fastestWay()
     {
         for (int j = 0; j <= JOBS; j++)
         {
-            cout << l[i][j] << " ";
+            if (j != JOBS)
+            {
+                cout << l[i][j] << " ";
+            }
             if (j == JOBS && l[i][j] != 0)
             {
                 cout << "<-";
