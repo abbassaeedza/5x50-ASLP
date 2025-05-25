@@ -4,9 +4,16 @@
 
 > A multi-line assembly system comprising 5 parallel assembly lines and 50 sequential stations. Each job is scheduled considering specific entry and exit times for each line, processing times at every station, and transfer times between lines at each station.
 
-This Scheduling Algorithm uses dynamic programming technique, It minimizes the total production time while maximizing the utilization of assembly resources.
+This is an implementation a Dynamic Programming-based Assembly Line Scheduling Algorithm, an extension of the classical two-line version to five lines. This choice is justified by:
 
-It is written in C++. Job Scheduling Simulation uses the given real-life datasets [transfer_times.csv](./data/transfer_times.csv), [entry_exit_times.csv](./data/entry_exit_times.csv), [processing_times.csv](./data/processing_times.csv)
+-   The optimal substructure of the problem: optimal schedules for smaller sequences contribute to the optimal global solution, thus minimizing the total production time while maximizing the utilization of assembly resources.
+-   Overlapping subproblems: results from previous stations are reused for future computations.
+-   Dynamic programming ensures efficient computation for large-scale instances like 5×50 configurations.
+
+This is implemented in C++, with modular structure separating parsing and Job Scheduling Simulation uses the given real-life datasets [transfer_times.csv](./data/transfer_times.csv), [entry_exit_times.csv](./data/entry_exit_times.csv), [processing_times.csv](./data/processing_times.csv)
+
+Storing the parsed data into 2D and 3D Arrays and printing it in CLI
+![parsed data](./images/parsed_data.png)
 
 ## How it works
 
@@ -21,6 +28,8 @@ Here's the diagram of given problem:
 -   After going through a station, a chassis can either:
     -   stay on same line at no cost, or
     -   transfer from line $k$ to other line $i$: cost after $𝑺_{(𝒊,𝒋)}$ is $𝑻_{(k,𝒊,𝒋)}$ for $k,𝒊= 1, 2, 3, 4, 5$ and $𝒋= 1, 2,…, 49$
+
+### Implementation Details
 
 Optimized Assembly Line Scheduling Algorithm is given as follows,
 
@@ -88,16 +97,30 @@ $$f^* = \min(f_1[50] + x_1,\ f_2[50] + x_2,\ f_3[50] + x_3,\ f_4[50] + x_4,\ f_5
 
 -   $𝒇^∗$: the fastest time to get through the entire factory
 
-## Parsed Data and Schedule Simulation
+## Results & Discussion
 
-Storing the parsed data into 2D and 3D Arrays and printing it in CLI\
-Parsed Data:
-![parsed data](./images/parsed_data.png)
-![scheduled simulation](./images/scheduled.png)
+### Experimental Result (Simulation)
 
-Scheduled:
-![highlighted diagram](./images/diagram_highlighted.png)
 ![scheduled simulation highlighted](./images/scheduled_highlighted.png)
+![highlighted diagram](./images/diagram_highlighted.png)
 
-$$
-$$
+### Findings:
+
+-   Minimal total production time (makespan): 439 minutes (36 hours)
+-   Best performing path: Line transitions occurred 23 times (from simulation)
+
+### Performance Comparison:
+
+| Algorithm                  | Makespan     | Transitions | Complexity |
+| -------------------------- | ------------ | ----------- | ---------- |
+| Dynamic Programming (Ours) | 439 mins     | 23          | O(n × m²)  |
+| Naive Greedy               | ~ 439+Δ mins | 0           | O(n × m)   |
+| Brute Force (Exhaustive)   | Infeasible   | High        | O(mⁿ)      |
+
+Where m = 5 (lines), n = 50 (stations)
+
+### Scalability Analysis:
+
+-   Implement real-time adaptive scheduling under constraints such as, dynamic workloads or machine failures.
+-   Extend to support multi-job concurrent scheduling (batch optimization).
+-   Integrate with visual dashboards or web tools for interactive schedule planning.
